@@ -1,5 +1,6 @@
 package ru.practicum.explorewithme.repository;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -26,7 +27,7 @@ public class StatsRepositoryCustomImpl implements StatsRepositoryCustom {
     Root<StatsEntity> statsEntityRoot = cq.from(StatsEntity.class);
     List<Predicate> predicates = new ArrayList<>();
 
-    predicates.add(cb.between(statsEntityRoot.get("timestamp"), start, end));
+    predicates.add(cb.between(statsEntityRoot.get("timestamp"), Timestamp.valueOf(start), Timestamp.valueOf(end)));
 
     if (uris != null && !uris.isEmpty()) {
       predicates.add(cb.isTrue(statsEntityRoot.get("uri").in(uris)));

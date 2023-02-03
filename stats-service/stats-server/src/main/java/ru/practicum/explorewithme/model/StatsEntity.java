@@ -1,5 +1,6 @@
 package ru.practicum.explorewithme.model;
 
+import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,5 +25,5 @@ public class StatsEntity {
   private String app;
   private String uri;
   private String ip;
-  private String timestamp;
+  private Timestamp timestamp;
 }
