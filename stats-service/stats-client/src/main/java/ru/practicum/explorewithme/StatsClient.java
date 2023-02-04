@@ -3,8 +3,10 @@ package ru.practicum.explorewithme;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+@Service
 public class StatsClient extends BaseClient {
 
   public StatsClient(RestTemplate rest) {

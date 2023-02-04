@@ -16,10 +16,10 @@ public class StatsService {
   private final StatsRepository statsRepository;
 
   public void hit(HitDto hitDto) {
-    statsRepository.save(new StatsMapper().toEntity(hitDto));
+    statsRepository.save(StatsMapper.toEntity(hitDto));
   }
 
-  public HitStatDto[] getStats(String start, String end, List<String> uris, Boolean unique) {
-    return statsRepository.getStats(start, end, uris, unique).toArray(new HitStatDto[0]);
+  public List<HitStatDto> getStats(String start, String end, List<String> uris, Boolean unique) {
+    return statsRepository.getStats(start, end, uris, unique);
   }
 }

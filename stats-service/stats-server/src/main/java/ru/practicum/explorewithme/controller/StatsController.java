@@ -2,7 +2,6 @@ package ru.practicum.explorewithme.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,7 @@ import ru.practicum.explorewithme.service.StatsService;
 
 @RestController
 @Validated
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor
 public class StatsController {
 
   private final StatsService statsService;
@@ -26,7 +25,7 @@ public class StatsController {
   }
 
   @GetMapping("/stats")
-  public HitStatDto[] getStats(@RequestParam String start,
+  public List<HitStatDto> getStats(@RequestParam String start,
       @RequestParam String end,
       @RequestParam(required = false) List<String> uris,
       @RequestParam(required = false) Boolean unique) {
