@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.explorewithme.category.model.CategoryEntity;
+import ru.practicum.explorewithme.user.model.User;
 
 @Getter
 @Setter
@@ -27,6 +28,9 @@ public class EventEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @ManyToOne
+  @JoinColumn(name = "initiator_id", referencedColumnName = "id")
+  private User initiator;
   private String annotation;
   @ManyToOne
   @JoinColumn(name = "category_id", referencedColumnName = "id")
