@@ -1,10 +1,12 @@
 package ru.practicum.explorewithme.event.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import ru.practicum.explorewithme.category.model.CategoryEntity;
+import ru.practicum.explorewithme.event.model.LocationEntity;
 import ru.practicum.explorewithme.user.model.User;
 
 @Getter
@@ -17,6 +19,7 @@ public class OutputEventDto {
   private User initiator;
   private CategoryEntity category;
   private String description;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
   private LocalDateTime eventDate;
   private LocationDto location;
   private Boolean paid;
@@ -25,4 +28,6 @@ public class OutputEventDto {
   private String title;
   private EventStatus state;
   private Long views;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
+  private LocalDateTime createdOn;
 }

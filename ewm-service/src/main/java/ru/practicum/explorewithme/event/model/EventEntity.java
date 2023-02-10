@@ -1,6 +1,7 @@
 package ru.practicum.explorewithme.event.model;
 
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,9 +38,15 @@ public class EventEntity {
   private CategoryEntity category;
   private String description;
   private LocalDateTime eventDate;
-  private String location;
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "location_id", referencedColumnName = "id")
+  private LocationEntity location;
   private Boolean paid;
   private Integer participantLimit;
   private Boolean requestModeration;
   private String title;
+  @ManyToOne
+  @JoinColumn(name = "state_id", referencedColumnName = "id")
+  private StateEntity state;
+  private LocalDateTime createdOn;
 }
