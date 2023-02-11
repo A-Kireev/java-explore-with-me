@@ -3,18 +3,19 @@ package ru.practicum.explorewithme.event.repository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.practicum.explorewithme.event.dto.EventStatus;
 import ru.practicum.explorewithme.event.model.EventEntity;
+import ru.practicum.explorewithme.request.model.RequestEntity;
 
 @Repository
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -59,6 +60,45 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
   @Override
   public List<EventEntity> searchEvents(String text, List<Integer> categories, Boolean paid, String rangeStart,
       String rangeEnd, Boolean onlyAvailable, String sort, int from, int size) {
-    return Collections.emptyList();
+    var cb = em.getCriteriaBuilder();
+    CriteriaQuery<EventEntity> cq = cb.createQuery(EventEntity.class);
+
+    Root<EventEntity> statsEntityRoot = cq.from(EventEntity.class);
+    List<Predicate> predicates = new ArrayList<>();
+
+    var format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    predicates.add(cb.between(statsEntityRoot.get("eventDate"),
+        LocalDateTime.parse(rangeStart, format),
+        LocalDateTime.parse(rangeEnd, format)));
+
+    if (text != null && !text.isBlank()) {
+      var annotationLike = cb.like(statsEntityRoot.get("annotation"), "%" + text + "%");
+      var descriptionLike = cb.like(statsEntityRoot.get("description"), "%" + text + "%");
+      var orPredicate = cb.or(annotationLike, descriptionLike);
+      predicates.add(orPredicate);
+    }
+
+    if (categories != null && !categories.isEmpty()) {
+      predicates.add(cb.isTrue(statsEntityRoot.get("category").get("id").in(categories)));
+    }
+
+    if (paid != null) {
+      predicates.add(cb.equal(statsEntityRoot.get("paid"), paid));
+    }
+
+    if (onlyAvailable != null && onlyAvailable) {
+      Subquery<Long> sub = cq.subquery(Long.class);
+      Root<RequestEntity> subRoot = sub.from(RequestEntity.class);
+      sub.select(cb.count(subRoot.get("id")));
+      sub.where(cb.equal(statsEntityRoot.get("id"), subRoot.get("event").get("id")));
+
+      predicates.add(cb.greaterThan(statsEntityRoot.get("participantLimit"), sub));
+    }
+
+    cq.select(statsEntityRoot);
+    cq.orderBy(cb.desc(cb.literal(1)));
+    cq.where(predicates.toArray(new Predicate[0]));
+
+    return em.createQuery(cq).setFirstResult(from).setMaxResults(size).getResultList();
   }
 }
