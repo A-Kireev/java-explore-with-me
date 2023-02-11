@@ -40,6 +40,13 @@ public class EventMapper {
   }
 
   public static EventEntity toEntity(InputEventDto inputEventDto, EventEntity eventEntity) {
+    EventStatus newState = null;
+    if (inputEventDto.getStateAction() != null) {
+      newState = inputEventDto.getStateAction() == StateAction.CANCEL_REVIEW
+          ? EventStatus.CANCELED
+          : EventStatus.PENDING;
+    }
+
     return EventEntity.builder()
         .id(eventEntity.getId())
         .annotation(inputEventDto.getAnnotation() != null ? inputEventDto.getAnnotation() : eventEntity.getAnnotation())
@@ -57,7 +64,7 @@ public class EventMapper {
         .title(inputEventDto.getTitle() != null ? inputEventDto.getTitle() : eventEntity.getTitle())
         .location(inputEventDto.getLocation() != null ? inputEventDto.getLocation() : eventEntity.getLocation())
         .createdOn(eventEntity.getCreatedOn())
-        .state(eventEntity.getState())
+        .state(newState != null ? newState : eventEntity.getState())
         .build();
   }
 }

@@ -18,5 +18,5 @@ public interface EventService {
   List<OutputEventDto> searchEvents(List<Long> users, List<String> states, List<Integer> categories, String rangeStart,
       String rangeEnd, int from, int size);
 
-  OutputEventDto updateEvent(long eventId, ChangeEventStateDto changeEventStateDto);
+  OutputEventDto updateEvent(long eventId, InputEventDto inputEventDto);
 }

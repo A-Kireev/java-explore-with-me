@@ -25,4 +25,5 @@ public class InputEventDto {
   private Integer participantLimit;
   private Boolean requestModeration;
   private String title;
+  private StateAction stateAction;
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.explorewithme.event.dto.ChangeEventStateDto;
 import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
 import ru.practicum.explorewithme.event.service.EventService;
@@ -59,7 +58,7 @@ public class EventController {
   }
 
   @PatchMapping("/admin/events/{eventId}")
-  public OutputEventDto updateEvent(@PathVariable long eventId, @RequestBody ChangeEventStateDto changeEventStateDto) {
-    return eventService.updateEvent(eventId, changeEventStateDto);
+  public OutputEventDto updateEvent(@PathVariable long eventId, @RequestBody InputEventDto inputEventDto) {
+    return eventService.updateEvent(eventId, inputEventDto);
   }
 }
