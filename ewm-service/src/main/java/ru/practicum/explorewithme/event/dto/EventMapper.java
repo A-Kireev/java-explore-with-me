@@ -71,4 +71,24 @@ public class EventMapper {
         .category(eventEntity.getCategory())
         .build();
   }
+
+  public static FullEventInfo toFullDto(EventEntity eventEntity, long confirmedRequests) {
+    return FullEventInfo.builder()
+        .id(eventEntity.getId())
+        .annotation(eventEntity.getAnnotation())
+        .description(eventEntity.getDescription())
+        .eventDate(eventEntity.getEventDate())
+        .paid(eventEntity.getPaid())
+        .participantLimit(eventEntity.getParticipantLimit())
+        .requestModeration(eventEntity.getRequestModeration())
+        .title(eventEntity.getTitle())
+        .createdOn(eventEntity.getCreatedOn())
+        .location(new LocationDto(eventEntity.getLocation().getLat(), eventEntity.getLocation().getLon()))
+        .publishedOn(eventEntity.getPublishedOn())
+        .state(eventEntity.getState())
+        .initiator(eventEntity.getInitiator())
+        .category(eventEntity.getCategory())
+        .confirmedRequests(confirmedRequests)
+        .build();
+  }
 }

@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import ru.practicum.explorewithme.category.model.CategoryEntity;
 import ru.practicum.explorewithme.event.dto.EventMapper;
 import ru.practicum.explorewithme.event.dto.EventStatus;
+import ru.practicum.explorewithme.event.dto.FullEventInfo;
 import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
 import ru.practicum.explorewithme.event.dto.StateAction;
 import ru.practicum.explorewithme.event.repository.EventRepository;
+import ru.practicum.explorewithme.request.repository.RequestRepository;
 import ru.practicum.explorewithme.user.model.User;
 
 @Service
@@ -22,6 +24,7 @@ import ru.practicum.explorewithme.user.model.User;
 public class EventServiceImpl implements EventService {
 
   private final EventRepository eventRepository;
+  private final RequestRepository requestRepository;
 
   @Override
   public List<OutputEventDto> getEvents(long userId, int from, int size) {
@@ -55,10 +58,10 @@ public class EventServiceImpl implements EventService {
   }
 
   @Override
-  public List<OutputEventDto> searchEvents(List<Long> users, List<String> states, List<Integer> categories,
+  public List<FullEventInfo> searchEvents(List<Long> users, List<String> states, List<Integer> categories,
       String rangeStart, String rangeEnd, int from, int size) {
     return eventRepository.searchEvents(users, states, categories, rangeStart, rangeEnd, from, size).stream()
-        .map(EventMapper::toDto)
+        .map(s -> EventMapper.toFullDto(s, requestRepository.countByEventId(s.getId())))
         .collect(Collectors.toList());
   }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.explorewithme.event.dto.FullEventInfo;
 import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
 import ru.practicum.explorewithme.event.service.EventService;
@@ -47,7 +48,7 @@ public class EventController {
   }
 
   @GetMapping("/admin/events")
-  public List<OutputEventDto> searchEvents(@RequestParam(required = false) List<Long> users,
+  public List<FullEventInfo> searchEvents(@RequestParam(required = false) List<Long> users,
       @RequestParam(required = false) List<String> states,
       @RequestParam(required = false) List<Integer> categories,
       @RequestParam(required = false) String rangeStart,
