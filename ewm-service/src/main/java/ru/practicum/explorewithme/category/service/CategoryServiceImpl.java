@@ -31,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
   public CategoryDto updateCategory(long categoryId, CategoryDto categoryDto) {
     var category = categoryRepository.findById(categoryId).orElseThrow(NoSuchElementException::new);
     category.setName(categoryDto.getName());
+    categoryRepository.save(category);
     return CategoryMapper.toDto(category);
   }
 
