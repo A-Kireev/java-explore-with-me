@@ -79,4 +79,19 @@ public class EventServiceImpl implements EventService {
     eventRepository.save(updatedEvent);
     return EventMapper.toDto(updatedEvent);
   }
+
+  @Override
+  public List<FullEventInfo> getFullEventInfo(String text, List<Integer> categories, Boolean paid, String rangeStart,
+      String rangeEnd, Boolean onlyAvailable, String sort, int from, int size) {
+    return eventRepository.searchEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size)
+        .stream()
+        .map(s -> EventMapper.toFullDto(s, requestRepository.countByEventId(s.getId())))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public FullEventInfo getFullEventInfo(long eventId) {
+    return EventMapper.toFullDto(eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new),
+        requestRepository.countByEventId(eventId));
+  }
 }

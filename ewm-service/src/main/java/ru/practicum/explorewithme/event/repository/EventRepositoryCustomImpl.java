@@ -3,6 +3,7 @@ package ru.practicum.explorewithme.event.repository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
@@ -53,5 +54,11 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
     cq.where(predicates.toArray(new Predicate[0]));
 
     return em.createQuery(cq).setFirstResult(from).setMaxResults(size).getResultList();
+  }
+
+  @Override
+  public List<EventEntity> searchEvents(String text, List<Integer> categories, Boolean paid, String rangeStart,
+      String rangeEnd, Boolean onlyAvailable, String sort, int from, int size) {
+    return Collections.emptyList();
   }
 }

@@ -19,4 +19,9 @@ public interface EventService {
       String rangeEnd, int from, int size);
 
   OutputEventDto updateEvent(long eventId, InputEventDto inputEventDto);
+
+  List<FullEventInfo> getFullEventInfo(String text, List<Integer> categories, Boolean paid, String rangeStart,
+      String rangeEnd, Boolean onlyAvailable, String sort, int from, int size);
+
+  FullEventInfo getFullEventInfo(long eventId);
 }

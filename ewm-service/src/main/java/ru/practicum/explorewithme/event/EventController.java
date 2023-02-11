@@ -62,4 +62,22 @@ public class EventController {
   public OutputEventDto updateEvent(@PathVariable long eventId, @RequestBody InputEventDto inputEventDto) {
     return eventService.updateEvent(eventId, inputEventDto);
   }
+
+  @GetMapping("/events")
+  public List<FullEventInfo> getFullEventInfo(@RequestParam(required = false) String text,
+      @RequestParam(required = false) List<Integer> categories,
+      @RequestParam(required = false) Boolean paid,
+      @RequestParam(required = false) String rangeStart,
+      @RequestParam(required = false) String rangeEnd,
+      @RequestParam(required = false) Boolean onlyAvailable,
+      @RequestParam(required = false) String sort,
+      @RequestParam(required = false) int from,
+      @RequestParam(required = false) int size) {
+    return eventService.getFullEventInfo(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+  }
+
+  @GetMapping("/events/{eventId}")
+  public FullEventInfo getFullEventInfo(@PathVariable long eventId) {
+    return eventService.getFullEventInfo(eventId);
+  }
 }
