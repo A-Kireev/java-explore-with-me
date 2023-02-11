@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.practicum.explorewithme.event.model.EventEntity;
-import ru.practicum.explorewithme.event.model.LocationEntity;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EventMapper {
@@ -34,7 +33,7 @@ public class EventMapper {
         .requestModeration(inputEventDto.getRequestModeration())
         .title(inputEventDto.getTitle())
         .createdOn(LocalDateTime.now())
-        .location(new LocationEntity(inputEventDto.getLocation().getLat(), inputEventDto.getLocation().getLon()))
+        .location(inputEventDto.getLocation())
         .build();
   }
 }

@@ -1,8 +1,12 @@
 package ru.practicum.explorewithme.event.model;
 
 import java.time.LocalDateTime;
-import javax.persistence.CascadeType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +19,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.explorewithme.category.model.CategoryEntity;
+import ru.practicum.explorewithme.event.dto.EventStatus;
+import ru.practicum.explorewithme.event.dto.LocationDto;
 import ru.practicum.explorewithme.user.model.User;
 
 @Getter
@@ -38,15 +44,15 @@ public class EventEntity {
   private CategoryEntity category;
   private String description;
   private LocalDateTime eventDate;
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "location_id", referencedColumnName = "id")
-  private LocationEntity location;
+  @Embedded
+  @AttributeOverride(name = "lat", column = @Column(name = "lat"))
+  @AttributeOverride(name = "lon", column = @Column(name = "lon"))
+  private LocationDto location;
   private Boolean paid;
   private Integer participantLimit;
   private Boolean requestModeration;
   private String title;
-  @ManyToOne
-  @JoinColumn(name = "state_id", referencedColumnName = "id")
-  private StateEntity state;
+  @Enumerated(EnumType.STRING)
+  private EventStatus state;
   private LocalDateTime createdOn;
 }

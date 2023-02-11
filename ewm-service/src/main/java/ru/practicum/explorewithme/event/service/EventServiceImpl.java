@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.practicum.explorewithme.event.dto.ChangeEventStateDto;
 import ru.practicum.explorewithme.event.dto.EventMapper;
+import ru.practicum.explorewithme.event.dto.EventStatus;
 import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
 import ru.practicum.explorewithme.event.repository.EventRepository;
@@ -26,7 +28,9 @@ public class EventServiceImpl implements EventService {
 
   @Override
   public OutputEventDto createEvent(long userId, InputEventDto inputEventDto) {
-    var event = eventRepository.save(EventMapper.toEntity(inputEventDto));
+    var event = EventMapper.toEntity(inputEventDto);
+    event.setState(EventStatus.PENDING);
+    eventRepository.save(event);
     return EventMapper.toDto(event);
   }
 
@@ -50,7 +54,7 @@ public class EventServiceImpl implements EventService {
   }
 
   @Override
-  public OutputEventDto updateEvent(long eventId, InputEventDto inputEventDto) {
-    return null;
+  public OutputEventDto updateEvent(long eventId, ChangeEventStateDto changeEventStateDto) {
+    return new OutputEventDto();
   }
 }

@@ -2,6 +2,8 @@ package ru.practicum.explorewithme.request.model;
 
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.explorewithme.event.model.EventEntity;
+import ru.practicum.explorewithme.request.dto.RequestStatusDto;
 import ru.practicum.explorewithme.user.model.User;
 
 @Getter
@@ -34,8 +37,7 @@ public class RequestEntity {
   @ManyToOne
   @JoinColumn(name = "requester_id", referencedColumnName = "id")
   private User user;
-  @ManyToOne
-  @JoinColumn(name = "request_status", referencedColumnName = "id")
-  private RequestStatusEntity status;
+  @Enumerated(EnumType.STRING)
+  private RequestStatusDto status;
   private LocalDateTime createdOn;
 }
