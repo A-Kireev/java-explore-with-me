@@ -2,6 +2,7 @@ package ru.practicum.explorewithme.event.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -11,6 +12,7 @@ import ru.practicum.explorewithme.event.dto.EventMapper;
 import ru.practicum.explorewithme.event.dto.EventStatus;
 import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
+import ru.practicum.explorewithme.event.dto.StateAction;
 import ru.practicum.explorewithme.event.repository.EventRepository;
 
 @Service
@@ -50,11 +52,21 @@ public class EventServiceImpl implements EventService {
   @Override
   public List<OutputEventDto> searchEvents(List<Long> users, List<String> states, List<Integer> categories,
       String rangeStart, String rangeEnd, int from, int size) {
-    return eventRepository.searchEvents(users, states, categories, rangeStart, rangeEnd, from, size);
+    return eventRepository.searchEvents(users, states, categories, rangeStart, rangeEnd, from, size).stream()
+        .map(EventMapper::toDto)
+        .collect(Collectors.toList());
   }
 
   @Override
   public OutputEventDto updateEvent(long eventId, ChangeEventStateDto changeEventStateDto) {
-    return new OutputEventDto();
+    var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
+
+    var newState = changeEventStateDto.getStateAction() == StateAction.PUBLISH_EVENT
+        ? EventStatus.PUBLISHED
+        : EventStatus.CANCELED;
+    event.setState(newState);
+
+    eventRepository.save(event);
+    return EventMapper.toDto(event);
   }
 }
