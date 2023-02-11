@@ -24,4 +24,8 @@ public class CategoryEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
+
+  public CategoryEntity(Long category) {
+    this.id = category;
+  }
 }

@@ -22,6 +22,8 @@ public class EventMapper {
         .location(new LocationDto(eventEntity.getLocation().getLat(), eventEntity.getLocation().getLon()))
         .publishedOn(eventEntity.getPublishedOn())
         .state(eventEntity.getState())
+        .initiator(eventEntity.getInitiator())
+        .category(eventEntity.getCategory())
         .build();
   }
 
@@ -65,6 +67,8 @@ public class EventMapper {
         .location(inputEventDto.getLocation() != null ? inputEventDto.getLocation() : eventEntity.getLocation())
         .createdOn(eventEntity.getCreatedOn())
         .state(newState != null ? newState : eventEntity.getState())
+        .initiator(eventEntity.getInitiator())
+        .category(eventEntity.getCategory())
         .build();
   }
 }
