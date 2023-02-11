@@ -34,8 +34,8 @@ public class RequestController {
   }
 
   @PatchMapping("/users/{userId}/requests/{requestId}/cancel")
-  public RequestDto cancelRequest(@PathVariable long userId, @PathVariable long eventId) {
-    return requestService.cancelRequest(userId, eventId);
+  public RequestDto cancelRequest(@PathVariable long userId, @PathVariable long requestId) {
+    return requestService.cancelRequest(userId, requestId);
   }
 
   @GetMapping("/users/{userId}/events/{eventId}/requests")

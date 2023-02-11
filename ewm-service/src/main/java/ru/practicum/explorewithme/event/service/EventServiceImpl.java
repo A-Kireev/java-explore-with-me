@@ -46,8 +46,9 @@ public class EventServiceImpl implements EventService {
   @Override
   public OutputEventDto updateEvent(long userId, long eventId, InputEventDto inputEventDto) {
     var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
-    eventRepository.save(EventMapper.toEntity(inputEventDto));
-    return EventMapper.toDto(event);
+    var updatedEvent = EventMapper.toEntity(inputEventDto, event);
+    eventRepository.save(updatedEvent);
+    return EventMapper.toDto(updatedEvent);
   }
 
   @Override

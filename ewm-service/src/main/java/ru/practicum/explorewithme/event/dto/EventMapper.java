@@ -21,6 +21,7 @@ public class EventMapper {
         .createdOn(eventEntity.getCreatedOn())
         .location(new LocationDto(eventEntity.getLocation().getLat(), eventEntity.getLocation().getLon()))
         .publishedOn(eventEntity.getPublishedOn())
+        .state(eventEntity.getState())
         .build();
   }
 
@@ -35,6 +36,28 @@ public class EventMapper {
         .title(inputEventDto.getTitle())
         .createdOn(LocalDateTime.now())
         .location(inputEventDto.getLocation())
+        .build();
+  }
+
+  public static EventEntity toEntity(InputEventDto inputEventDto, EventEntity eventEntity) {
+    return EventEntity.builder()
+        .id(eventEntity.getId())
+        .annotation(inputEventDto.getAnnotation() != null ? inputEventDto.getAnnotation() : eventEntity.getAnnotation())
+        .description(inputEventDto.getDescription() != null
+            ? inputEventDto.getDescription()
+            : eventEntity.getDescription())
+        .eventDate(inputEventDto.getEventDate() != null ? inputEventDto.getEventDate() : eventEntity.getEventDate())
+        .paid(inputEventDto.getPaid() != null ? inputEventDto.getPaid() : eventEntity.getPaid())
+        .participantLimit(inputEventDto.getParticipantLimit() != null
+            ? inputEventDto.getParticipantLimit()
+            : eventEntity.getParticipantLimit())
+        .requestModeration(inputEventDto.getRequestModeration() != null
+            ? inputEventDto.getRequestModeration()
+            : eventEntity.getRequestModeration())
+        .title(inputEventDto.getTitle() != null ? inputEventDto.getTitle() : eventEntity.getTitle())
+        .location(inputEventDto.getLocation() != null ? inputEventDto.getLocation() : eventEntity.getLocation())
+        .createdOn(eventEntity.getCreatedOn())
+        .state(eventEntity.getState())
         .build();
   }
 }

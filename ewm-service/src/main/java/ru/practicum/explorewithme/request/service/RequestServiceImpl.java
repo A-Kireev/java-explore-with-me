@@ -2,6 +2,7 @@ package ru.practicum.explorewithme.request.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,12 +49,12 @@ public class RequestServiceImpl implements RequestService {
   }
 
   @Override
-  public RequestDto cancelRequest(long userId, long eventId) {
-    var request = requestRepository.findByUserIdAndEventId(userId, eventId);
-    request.setStatus(RequestStatusDto.REJECTED);
+  public RequestDto cancelRequest(long userId, long requestId) {
+    var request = requestRepository.findById(requestId).orElseThrow(NoSuchElementException::new);
+    request.setStatus(RequestStatusDto.CANCELED);
     requestRepository.save(request);
 
-    return RequestMapper.toDto(requestRepository.findByUserIdAndEventId(userId, eventId));
+    return RequestMapper.toDto(request);
   }
 
   @Override

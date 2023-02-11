@@ -11,7 +11,7 @@ public interface RequestService {
 
   RequestDto createRequest(long userId, long eventId);
 
-  RequestDto cancelRequest(long userId, long eventId);
+  RequestDto cancelRequest(long userId, long requestId);
 
   List<RequestDto> getEventRequests(long userId, long eventId);
 
