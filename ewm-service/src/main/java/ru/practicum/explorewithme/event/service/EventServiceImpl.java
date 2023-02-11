@@ -1,5 +1,6 @@
 package ru.practicum.explorewithme.event.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -65,6 +66,7 @@ public class EventServiceImpl implements EventService {
         ? EventStatus.PUBLISHED
         : EventStatus.CANCELED;
     event.setState(newState);
+    event.setPublishedOn(newState == EventStatus.PUBLISHED ? LocalDateTime.now() : null);
 
     eventRepository.save(event);
     return EventMapper.toDto(event);

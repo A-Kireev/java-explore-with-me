@@ -20,6 +20,7 @@ public class EventMapper {
         .title(eventEntity.getTitle())
         .createdOn(eventEntity.getCreatedOn())
         .location(new LocationDto(eventEntity.getLocation().getLat(), eventEntity.getLocation().getLon()))
+        .publishedOn(eventEntity.getPublishedOn())
         .build();
   }
 

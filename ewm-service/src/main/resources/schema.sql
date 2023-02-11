@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS events (
   description text,
   event_date timestamp NOT NULL,
   created_on timestamp NOT NULL,
+  published_on timestamp,
   lat float NOT NULL,
   lon float NOT NULL,
   paid boolean,

@@ -55,4 +55,5 @@ public class EventEntity {
   @Enumerated(EnumType.STRING)
   private EventStatus state;
   private LocalDateTime createdOn;
+  private LocalDateTime publishedOn;
 }
