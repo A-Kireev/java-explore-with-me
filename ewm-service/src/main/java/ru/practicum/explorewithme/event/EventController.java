@@ -74,8 +74,8 @@ public class EventController {
       @RequestParam(required = false) String rangeEnd,
       @RequestParam(required = false) Boolean onlyAvailable,
       @RequestParam(required = false) String sort,
-      @RequestParam(required = false) int from,
-      @RequestParam(required = false) int size) {
+      @RequestParam(defaultValue = "0") int from,
+      @RequestParam(defaultValue = "10") int size) {
     return eventService.getFullEventInfo(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
   }
 

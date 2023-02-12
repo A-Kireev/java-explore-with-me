@@ -33,9 +33,14 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
     List<Predicate> predicates = new ArrayList<>();
 
     var format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    predicates.add(cb.between(statsEntityRoot.get("eventDate"),
-        LocalDateTime.parse(rangeStart, format),
-        LocalDateTime.parse(rangeEnd, format)));
+    if (rangeStart != null) {
+      predicates.add(cb.greaterThan(statsEntityRoot.get("eventDate"),
+          LocalDateTime.parse(rangeStart, format)));
+    }
+    if (rangeEnd != null) {
+      predicates.add(cb.lessThan(statsEntityRoot.get("eventDate"),
+          LocalDateTime.parse(rangeEnd, format)));
+    }
 
     if (users != null && !users.isEmpty()) {
       predicates.add(cb.isTrue(statsEntityRoot.get("initiator").get("id").in(users)));
@@ -67,9 +72,14 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
     List<Predicate> predicates = new ArrayList<>();
 
     var format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    predicates.add(cb.between(statsEntityRoot.get("eventDate"),
-        LocalDateTime.parse(rangeStart, format),
-        LocalDateTime.parse(rangeEnd, format)));
+    if (rangeStart != null) {
+      predicates.add(cb.greaterThan(statsEntityRoot.get("eventDate"),
+          LocalDateTime.parse(rangeStart, format)));
+    }
+    if (rangeEnd != null) {
+      predicates.add(cb.lessThan(statsEntityRoot.get("eventDate"),
+          LocalDateTime.parse(rangeEnd, format)));
+    }
 
     if (text != null && !text.isBlank()) {
       var annotationLike = cb.like(statsEntityRoot.get("annotation"), "%" + text + "%");
