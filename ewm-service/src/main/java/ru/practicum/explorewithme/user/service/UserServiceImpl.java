@@ -2,7 +2,6 @@ package ru.practicum.explorewithme.user.service;
 
 import io.micrometer.core.instrument.util.StringUtils;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
