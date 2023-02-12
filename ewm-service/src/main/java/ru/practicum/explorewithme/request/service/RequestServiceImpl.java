@@ -98,10 +98,17 @@ public class RequestServiceImpl implements RequestService {
         throw new ValidationException("Cannot change request status.");
       }
       s.setStatus(changeRequestStatusDto.getStatus());
-      requestRepository.save(s);
 
-      var event = eventRepository.findById(s.getId()).orElseThrow(NoSuchElementException::new);
+      var event = eventRepository.findById(s.getEvent().getId()).orElseThrow(NoSuchElementException::new);
+
+      if (event.getParticipantLimit() != null) {
+        if (event.getConfirmedRequests() != null && event.getConfirmedRequests() >= event.getParticipantLimit()) {
+          throw new ValidationException("Participant limit reached.");
+        }
+      }
+
       event.setConfirmedRequests(event.getConfirmedRequests() != null ? event.getConfirmedRequests() + 1 : 1);
+      requestRepository.save(s);
       eventRepository.save(event);
     });
 
