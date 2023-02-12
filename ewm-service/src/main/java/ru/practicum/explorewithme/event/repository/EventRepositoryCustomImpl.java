@@ -105,8 +105,13 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
       predicates.add(cb.greaterThan(statsEntityRoot.get("participantLimit"), sub));
     }
 
+    if (sort != null) {
+      cq.orderBy("EVENT_DATE".equals(sort)
+          ? cb.desc(statsEntityRoot.get("eventDate"))
+          : cb.desc(statsEntityRoot.get("views")));
+    }
+
     cq.select(statsEntityRoot);
-    cq.orderBy(cb.desc(cb.literal(1)));
     cq.where(predicates.toArray(new Predicate[0]));
 
     return em.createQuery(cq).setFirstResult(from).setMaxResults(size).getResultList();
