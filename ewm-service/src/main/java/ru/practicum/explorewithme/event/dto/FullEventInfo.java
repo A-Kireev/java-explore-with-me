@@ -35,5 +35,5 @@ public class FullEventInfo {
   private LocalDateTime createdOn;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
   private LocalDateTime publishedOn;
-  private Long confirmedRequests;
+  private Integer confirmedRequests;
 }

@@ -44,6 +44,12 @@ public class RequestServiceImpl implements RequestService {
       throw new ValidationException("Initiator cant send requests for its events.");
     }
 
+    if (event.getParticipantLimit() != null) {
+      if (event.getConfirmedRequests() != null && event.getConfirmedRequests() >= event.getParticipantLimit()) {
+        throw new ValidationException("Participant limit reached.");
+      }
+    }
+
     var requestState = Boolean.TRUE.equals(event.getRequestModeration())
         ? RequestStatusDto.PENDING
         : RequestStatusDto.CONFIRMED;
@@ -62,6 +68,7 @@ public class RequestServiceImpl implements RequestService {
 
     if (requestState == RequestStatusDto.CONFIRMED) {
       event.setConfirmedRequests(event.getConfirmedRequests() != null ? event.getConfirmedRequests() + 1 : 1);
+      eventRepository.save(event);
     }
 
     return RequestMapper.toDto(request);
