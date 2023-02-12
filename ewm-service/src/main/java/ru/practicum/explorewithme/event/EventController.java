@@ -45,9 +45,7 @@ public class EventController {
 
   @GetMapping("/users/{userId}/events/{eventId}")
   public OutputEventDto getEvent(@PathVariable long userId, @PathVariable long eventId, HttpServletRequest request) {
-    statsClient.hit(new HitDto("ewm-service", request.getRequestURI(), request.getRemoteAddr(),
-        LocalDateTime.now().toString()));
-
+    statsClient.hit(new HitDto("ewm-service", request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
     return eventService.getEvent(userId, eventId);
   }
 
@@ -85,9 +83,7 @@ public class EventController {
       @RequestParam(defaultValue = "0") int from,
       @RequestParam(defaultValue = "10") int size,
       HttpServletRequest request) {
-    statsClient.hit(new HitDto("ewm-service", request.getRequestURI(), request.getRemoteAddr(),
-        LocalDateTime.now().toString()));
-
+    statsClient.hit(new HitDto("ewm-service", request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
     return eventService.getFullEventInfo(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
   }
 
