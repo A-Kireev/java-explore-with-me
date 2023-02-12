@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS events (
   request_moderation boolean,
   title varchar NOT NULL,
   state varchar NOT NULL,
-  confirmed_requests int8
+  confirmed_requests int8,
+  views int8
 );
 
 CREATE TABLE IF NOT EXISTS requests (

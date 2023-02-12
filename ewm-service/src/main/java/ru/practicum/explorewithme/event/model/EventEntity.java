@@ -57,6 +57,7 @@ public class EventEntity {
   private LocalDateTime createdOn;
   private LocalDateTime publishedOn;
   private Integer confirmedRequests;
+  private Long views;
 
   public EventEntity(Long id) {
     this.id = id;

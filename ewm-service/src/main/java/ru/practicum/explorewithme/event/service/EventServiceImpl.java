@@ -51,6 +51,9 @@ public class EventServiceImpl implements EventService {
   @Override
   public OutputEventDto getEvent(long userId, long eventId) {
     var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
+    event.setViews(event.getViews() != null ? event.getViews() + 1 : 1);
+    eventRepository.save(event);
+
     return EventMapper.toDto(event);
   }
 
@@ -115,6 +118,10 @@ public class EventServiceImpl implements EventService {
 
   @Override
   public FullEventInfo getFullEventInfo(long eventId) {
-    return EventMapper.toFullDto(eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new));
+    var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
+    event.setViews(event.getViews() != null ? event.getViews() + 1 : 1);
+    eventRepository.save(event);
+
+    return EventMapper.toFullDto(event);
   }
 }

@@ -25,6 +25,7 @@ public class EventMapper {
         .initiator(eventEntity.getInitiator())
         .category(eventEntity.getCategory())
         .confirmedRequests(eventEntity.getConfirmedRequests())
+        .views(eventEntity.getViews())
         .build();
   }
 
@@ -71,6 +72,7 @@ public class EventMapper {
         .initiator(eventEntity.getInitiator())
         .category(eventEntity.getCategory())
         .confirmedRequests(eventEntity.getConfirmedRequests())
+        .views(eventEntity.getViews())
         .build();
   }
 
@@ -91,6 +93,7 @@ public class EventMapper {
         .initiator(eventEntity.getInitiator())
         .category(eventEntity.getCategory())
         .confirmedRequests(eventEntity.getConfirmedRequests())
+        .views(eventEntity.getViews())
         .build();
   }
 }
