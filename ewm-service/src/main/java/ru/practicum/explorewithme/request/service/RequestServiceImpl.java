@@ -6,7 +6,9 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.explorewithme.event.model.EventEntity;
+import ru.practicum.explorewithme.commonhandler.ValidationException;
+import ru.practicum.explorewithme.event.dto.EventStatus;
+import ru.practicum.explorewithme.event.repository.EventRepository;
 import ru.practicum.explorewithme.request.dto.ChangeRequestStatusDto;
 import ru.practicum.explorewithme.request.dto.RequestDto;
 import ru.practicum.explorewithme.request.dto.RequestMapper;
@@ -21,6 +23,7 @@ import ru.practicum.explorewithme.user.model.User;
 public class RequestServiceImpl implements RequestService {
 
   private final RequestRepository requestRepository;
+  private final EventRepository eventRepository;
 
   @Override
   public List<RequestDto> getRequests(long userId) {
@@ -31,8 +34,15 @@ public class RequestServiceImpl implements RequestService {
 
   @Override
   public RequestDto createRequest(long userId, long eventId) {
-    var event = new EventEntity();
-    event.setId(eventId);
+    var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
+
+    if (event.getState() != EventStatus.PUBLISHED) {
+      throw new ValidationException("Event not published yet.");
+    }
+
+    if (event.getInitiator().getId() == userId) {
+      throw new ValidationException("Initiator cant send requests for its events.");
+    }
 
     var user = new User();
     user.setId(userId);
@@ -68,6 +78,9 @@ public class RequestServiceImpl implements RequestService {
   public RequestStatusesDto changeEventRequests(long userId, ChangeRequestStatusDto changeRequestStatusDto) {
     var requests = requestRepository.findAllByIdIn(changeRequestStatusDto.getRequestIds());
     requests.forEach(s -> {
+      if (s.getStatus() != RequestStatusDto.PENDING) {
+        throw new ValidationException("Cannot change request status.");
+      }
       s.setStatus(changeRequestStatusDto.getStatus());
       requestRepository.save(s);
     });

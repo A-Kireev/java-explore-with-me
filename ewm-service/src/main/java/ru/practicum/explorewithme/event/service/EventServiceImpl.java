@@ -53,6 +53,11 @@ public class EventServiceImpl implements EventService {
   @Override
   public OutputEventDto updateEvent(long userId, long eventId, InputEventDto inputEventDto) {
     var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
+
+    if (event.getState() != EventStatus.PENDING && event.getState() != EventStatus.CANCELED) {
+      throw new ValidationException("Cannot change event because of its state");
+    }
+
     var updatedEvent = EventMapper.toEntity(inputEventDto, event);
     eventRepository.save(updatedEvent);
     return EventMapper.toDto(updatedEvent);

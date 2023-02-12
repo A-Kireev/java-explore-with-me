@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS requests (
   event_id int8 REFERENCES events (id),
   requester_id int8 REFERENCES users (id),
   status varchar NOT NULL,
-  created_on timestamp NOT NULL
+  created_on timestamp NOT NULL,
+  CONSTRAINT user_event_pk UNIQUE (requester_id, event_id)
 );
 
 CREATE TABLE IF NOT EXISTS compilations (
