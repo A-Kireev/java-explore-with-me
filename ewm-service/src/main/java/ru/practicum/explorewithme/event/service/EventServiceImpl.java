@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.explorewithme.category.model.CategoryEntity;
+import ru.practicum.explorewithme.commonhandler.ValidationException;
 import ru.practicum.explorewithme.event.dto.EventMapper;
 import ru.practicum.explorewithme.event.dto.EventStatus;
 import ru.practicum.explorewithme.event.dto.FullEventInfo;
@@ -69,6 +70,12 @@ public class EventServiceImpl implements EventService {
   public OutputEventDto updateEvent(long eventId, InputEventDto inputEventDto) {
     var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
     var updatedEvent = EventMapper.toEntity(inputEventDto, event);
+
+    if ((inputEventDto.getStateAction() == StateAction.PUBLISH_EVENT
+        || inputEventDto.getStateAction() == StateAction.REJECT_EVENT)
+        && (event.getState() == EventStatus.PUBLISHED || event.getState() == EventStatus.CANCELED)) {
+      throw new ValidationException("This event already published.");
+    }
 
     var newState = inputEventDto.getStateAction() == StateAction.PUBLISH_EVENT
         ? EventStatus.PUBLISHED

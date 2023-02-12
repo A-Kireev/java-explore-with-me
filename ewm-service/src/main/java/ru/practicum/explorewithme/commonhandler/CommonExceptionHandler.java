@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,6 +35,24 @@ public class CommonExceptionHandler {
   public ErrorResponse handleConstraintViolationException(final DataIntegrityViolationException e) {
     return new ErrorResponse(HttpStatus.CONFLICT,
         "Integrity constraint has been violated.",
+        e.getMessage(),
+        LocalDateTime.now());
+  }
+
+  @ExceptionHandler
+  @ResponseStatus(HttpStatus.CONFLICT)
+  public ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+    return new ErrorResponse(HttpStatus.CONFLICT,
+        "For the requested operation the conditions are not met.",
+        e.getMessage(),
+        LocalDateTime.now());
+  }
+
+  @ExceptionHandler
+  @ResponseStatus(HttpStatus.CONFLICT)
+  public ErrorResponse handleValidationException(final ValidationException e) {
+    return new ErrorResponse(HttpStatus.CONFLICT,
+        "For the requested operation the conditions are not met.",
         e.getMessage(),
         LocalDateTime.now());
   }

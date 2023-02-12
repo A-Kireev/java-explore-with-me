@@ -1,8 +1,10 @@
 package ru.practicum.explorewithme.event;
 
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
 import ru.practicum.explorewithme.event.service.EventService;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class EventController {
@@ -31,7 +34,7 @@ public class EventController {
 
   @PostMapping("/users/{userId}/events")
   @ResponseStatus(HttpStatus.CREATED)
-  public OutputEventDto createEvent(@PathVariable long userId, @RequestBody InputEventDto inputEventDto) {
+  public OutputEventDto createEvent(@PathVariable long userId, @Valid @RequestBody InputEventDto inputEventDto) {
     return eventService.createEvent(userId, inputEventDto);
   }
 
@@ -43,7 +46,7 @@ public class EventController {
   @PatchMapping("/users/{userId}/events/{eventId}")
   public OutputEventDto updateEvent(@PathVariable long userId,
       @PathVariable long eventId,
-      @RequestBody InputEventDto inputEventDto) {
+      @Valid @RequestBody InputEventDto inputEventDto) {
     return eventService.updateEvent(userId, eventId, inputEventDto);
   }
 
@@ -59,7 +62,7 @@ public class EventController {
   }
 
   @PatchMapping("/admin/events/{eventId}")
-  public OutputEventDto updateEvent(@PathVariable long eventId, @RequestBody InputEventDto inputEventDto) {
+  public OutputEventDto updateEvent(@PathVariable long eventId, @Valid @RequestBody InputEventDto inputEventDto) {
     return eventService.updateEvent(eventId, inputEventDto);
   }
 
