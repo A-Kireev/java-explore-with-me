@@ -1,6 +1,8 @@
 package ru.practicum.explorewithme.event;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.explorewithme.HitDto;
+import ru.practicum.explorewithme.StatsClient;
 import ru.practicum.explorewithme.event.dto.FullEventInfo;
 import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
@@ -24,6 +28,7 @@ import ru.practicum.explorewithme.event.service.EventService;
 public class EventController {
 
   private final EventService eventService;
+  private final StatsClient statsClient;
 
   @GetMapping("/users/{userId}/events")
   public List<OutputEventDto> getEvents(@PathVariable long userId,
@@ -39,7 +44,10 @@ public class EventController {
   }
 
   @GetMapping("/users/{userId}/events/{eventId}")
-  public OutputEventDto getEvent(@PathVariable long userId, @PathVariable long eventId) {
+  public OutputEventDto getEvent(@PathVariable long userId, @PathVariable long eventId, HttpServletRequest request) {
+    statsClient.hit(new HitDto("ewm-service", request.getRequestURI(), request.getRemoteAddr(),
+        LocalDateTime.now().toString()));
+
     return eventService.getEvent(userId, eventId);
   }
 
@@ -75,7 +83,11 @@ public class EventController {
       @RequestParam(required = false) Boolean onlyAvailable,
       @RequestParam(required = false) String sort,
       @RequestParam(defaultValue = "0") int from,
-      @RequestParam(defaultValue = "10") int size) {
+      @RequestParam(defaultValue = "10") int size,
+      HttpServletRequest request) {
+    statsClient.hit(new HitDto("ewm-service", request.getRequestURI(), request.getRemoteAddr(),
+        LocalDateTime.now().toString()));
+
     return eventService.getFullEventInfo(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
   }
 
