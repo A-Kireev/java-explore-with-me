@@ -3,6 +3,7 @@ package ru.practicum.explorewithme.event.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,9 @@ import lombok.Setter;
 @Builder
 public class InputEventDto {
 
+  @NotNull
   private String annotation;
+  @NotNull
   private Integer category;
   private String description;
   @Future
@@ -26,6 +29,7 @@ public class InputEventDto {
   private Boolean paid;
   private Integer participantLimit;
   private Boolean requestModeration;
+  @NotNull
   private String title;
   private StateAction stateAction;
 }

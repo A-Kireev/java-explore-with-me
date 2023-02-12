@@ -1,8 +1,10 @@
 package ru.practicum.explorewithme.category;
 
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.explorewithme.category.dto.CategoryDto;
 import ru.practicum.explorewithme.category.service.CategoryService;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class CategoryController {
@@ -23,7 +26,7 @@ public class CategoryController {
 
   @PostMapping("/admin/categories")
   @ResponseStatus(HttpStatus.CREATED)
-  public CategoryDto createCategory(@RequestBody CategoryDto categoryDto) {
+  public CategoryDto createCategory(@Valid @RequestBody CategoryDto categoryDto) {
     return categoryService.createCategory(categoryDto);
   }
 
@@ -34,7 +37,7 @@ public class CategoryController {
   }
 
   @PatchMapping("/admin/categories/{categoryId}")
-  public CategoryDto updateCategory(@PathVariable long categoryId, @RequestBody CategoryDto categoryDto) {
+  public CategoryDto updateCategory(@PathVariable long categoryId, @Valid @RequestBody CategoryDto categoryDto) {
     return categoryService.updateCategory(categoryId, categoryDto);
   }
 

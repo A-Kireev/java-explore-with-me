@@ -1,9 +1,11 @@
 package ru.practicum.explorewithme.user;
 
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.explorewithme.user.dto.UserDto;
 import ru.practicum.explorewithme.user.service.UserService;
 
+@Validated
 @RestController
 @RequestMapping(path = "/admin/users")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -25,7 +28,7 @@ public class UserController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public UserDto createUser(@RequestBody UserDto userDto) {
+  public UserDto createUser(@Valid @RequestBody UserDto userDto) {
     return userService.createUser(userDto);
   }
 

@@ -40,9 +40,9 @@ public class CommonExceptionHandler {
   }
 
   @ExceptionHandler
-  @ResponseStatus(HttpStatus.CONFLICT)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
-    return new ErrorResponse(HttpStatus.CONFLICT,
+    return new ErrorResponse(HttpStatus.BAD_REQUEST,
         "For the requested operation the conditions are not met.",
         e.getMessage(),
         LocalDateTime.now());

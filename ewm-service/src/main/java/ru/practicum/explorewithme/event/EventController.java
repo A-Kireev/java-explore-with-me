@@ -46,7 +46,7 @@ public class EventController {
   @PatchMapping("/users/{userId}/events/{eventId}")
   public OutputEventDto updateEvent(@PathVariable long userId,
       @PathVariable long eventId,
-      @Valid @RequestBody InputEventDto inputEventDto) {
+      @RequestBody InputEventDto inputEventDto) {
     return eventService.updateEvent(userId, eventId, inputEventDto);
   }
 
@@ -62,7 +62,7 @@ public class EventController {
   }
 
   @PatchMapping("/admin/events/{eventId}")
-  public OutputEventDto updateEvent(@PathVariable long eventId, @Valid @RequestBody InputEventDto inputEventDto) {
+  public OutputEventDto updateEvent(@PathVariable long eventId, @RequestBody InputEventDto inputEventDto) {
     return eventService.updateEvent(eventId, inputEventDto);
   }
 
