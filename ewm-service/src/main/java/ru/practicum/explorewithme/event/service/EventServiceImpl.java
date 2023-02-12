@@ -36,6 +36,10 @@ public class EventServiceImpl implements EventService {
 
   @Override
   public OutputEventDto createEvent(long userId, InputEventDto inputEventDto) {
+    if (inputEventDto.getEventDate() != null && inputEventDto.getEventDate().isBefore(LocalDateTime.now())) {
+      throw new ValidationException("Incorrect date.");
+    }
+
     var event = EventMapper.toEntity(inputEventDto);
     event.setInitiator(new User(userId));
     event.setCategory(new CategoryEntity(Long.valueOf(inputEventDto.getCategory())));
@@ -55,7 +59,11 @@ public class EventServiceImpl implements EventService {
     var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
 
     if (event.getState() != EventStatus.PENDING && event.getState() != EventStatus.CANCELED) {
-      throw new ValidationException("Cannot change event because of its state");
+      throw new ValidationException("Cannot change event because of its state.");
+    }
+
+    if (inputEventDto.getEventDate() != null && inputEventDto.getEventDate().isBefore(LocalDateTime.now())) {
+      throw new ValidationException("Incorrect date.");
     }
 
     var updatedEvent = EventMapper.toEntity(inputEventDto, event);
@@ -80,6 +88,10 @@ public class EventServiceImpl implements EventService {
         || inputEventDto.getStateAction() == StateAction.REJECT_EVENT)
         && (event.getState() == EventStatus.PUBLISHED || event.getState() == EventStatus.CANCELED)) {
       throw new ValidationException("This event already published.");
+    }
+
+    if (inputEventDto.getEventDate() != null && inputEventDto.getEventDate().isBefore(LocalDateTime.now())) {
+      throw new ValidationException("Incorrect date.");
     }
 
     var newState = inputEventDto.getStateAction() == StateAction.PUBLISH_EVENT
