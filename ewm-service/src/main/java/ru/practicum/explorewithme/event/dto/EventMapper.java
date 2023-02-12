@@ -24,6 +24,7 @@ public class EventMapper {
         .state(eventEntity.getState())
         .initiator(eventEntity.getInitiator())
         .category(eventEntity.getCategory())
+        .confirmedRequests(eventEntity.getConfirmedRequests())
         .build();
   }
 
@@ -69,10 +70,11 @@ public class EventMapper {
         .state(newState != null ? newState : eventEntity.getState())
         .initiator(eventEntity.getInitiator())
         .category(eventEntity.getCategory())
+        .confirmedRequests(eventEntity.getConfirmedRequests())
         .build();
   }
 
-  public static FullEventInfo toFullDto(EventEntity eventEntity, long confirmedRequests) {
+  public static FullEventInfo toFullDto(EventEntity eventEntity) {
     return FullEventInfo.builder()
         .id(eventEntity.getId())
         .annotation(eventEntity.getAnnotation())
@@ -88,7 +90,7 @@ public class EventMapper {
         .state(eventEntity.getState())
         .initiator(eventEntity.getInitiator())
         .category(eventEntity.getCategory())
-        .confirmedRequests(confirmedRequests)
+        .confirmedRequests(eventEntity.getConfirmedRequests())
         .build();
   }
 }

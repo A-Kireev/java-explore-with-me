@@ -75,7 +75,7 @@ public class EventServiceImpl implements EventService {
   public List<FullEventInfo> searchEvents(List<Long> users, List<String> states, List<Integer> categories,
       String rangeStart, String rangeEnd, int from, int size) {
     return eventRepository.searchEvents(users, states, categories, rangeStart, rangeEnd, from, size).stream()
-        .map(s -> EventMapper.toFullDto(s, requestRepository.countByEventId(s.getId())))
+        .map(EventMapper::toFullDto)
         .collect(Collectors.toList());
   }
 
@@ -109,13 +109,12 @@ public class EventServiceImpl implements EventService {
       String rangeEnd, Boolean onlyAvailable, String sort, int from, int size) {
     return eventRepository.searchEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size)
         .stream()
-        .map(s -> EventMapper.toFullDto(s, requestRepository.countByEventId(s.getId())))
+        .map(EventMapper::toFullDto)
         .collect(Collectors.toList());
   }
 
   @Override
   public FullEventInfo getFullEventInfo(long eventId) {
-    return EventMapper.toFullDto(eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new),
-        requestRepository.countByEventId(eventId));
+    return EventMapper.toFullDto(eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new));
   }
 }

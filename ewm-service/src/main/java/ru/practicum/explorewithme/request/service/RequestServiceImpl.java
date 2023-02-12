@@ -44,6 +44,10 @@ public class RequestServiceImpl implements RequestService {
       throw new ValidationException("Initiator cant send requests for its events.");
     }
 
+    var requestState = Boolean.TRUE.equals(event.getRequestModeration())
+        ? RequestStatusDto.PENDING
+        : RequestStatusDto.CONFIRMED;
+
     var user = new User();
     user.setId(userId);
 
@@ -51,10 +55,15 @@ public class RequestServiceImpl implements RequestService {
         .event(event)
         .user(user)
         .createdOn(LocalDateTime.now())
-        .status(RequestStatusDto.PENDING)
+        .status(requestState)
         .build();
 
     requestRepository.save(request);
+
+    if (requestState == RequestStatusDto.CONFIRMED) {
+      event.setConfirmedRequests(event.getConfirmedRequests() != null ? event.getConfirmedRequests() + 1 : 1);
+    }
+
     return RequestMapper.toDto(request);
   }
 
@@ -83,6 +92,10 @@ public class RequestServiceImpl implements RequestService {
       }
       s.setStatus(changeRequestStatusDto.getStatus());
       requestRepository.save(s);
+
+      var event = eventRepository.findById(s.getId()).orElseThrow(NoSuchElementException::new);
+      event.setConfirmedRequests(event.getConfirmedRequests() != null ? event.getConfirmedRequests() + 1 : 1);
+      eventRepository.save(event);
     });
 
     var updatedRequests = new RequestStatusesDto();
