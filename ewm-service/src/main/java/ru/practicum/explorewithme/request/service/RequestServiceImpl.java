@@ -79,6 +79,11 @@ public class RequestServiceImpl implements RequestService {
   @Override
   public RequestDto cancelRequest(long userId, long requestId) {
     var request = requestRepository.findById(requestId).orElseThrow(NoSuchElementException::new);
+
+    if (request.getUser().getId() != userId) {
+      throw new IllegalStateException("Only request owner can cancel requests.");
+    }
+
     request.setStatus(RequestStatusDto.CANCELED);
     requestRepository.save(request);
 
@@ -87,6 +92,12 @@ public class RequestServiceImpl implements RequestService {
 
   @Override
   public List<RequestDto> getEventRequests(long userId, long eventId) {
+    var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
+
+    if (event.getInitiator().getId() != userId) {
+      throw new IllegalStateException("Only request owner can watch requests for its event.");
+    }
+
     return requestRepository.findAllByEventId(eventId).stream()
         .map(RequestMapper::toDto)
         .collect(Collectors.toList());
