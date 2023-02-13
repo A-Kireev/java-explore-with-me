@@ -1,5 +1,6 @@
 package ru.practicum.explorewithme.compilations.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class CompilationServiceImpl implements CompilationService {
   @Override
   public CompilationDto createCompilation(CompilationCreationDto compilationCreationDto) {
     var compilation = CompilationMapper.toEntity(compilationCreationDto);
-    compilation.setEvents(eventRepository.findAllById(compilationCreationDto.getEvents()));
+    compilation.setEvents(new HashSet<>(eventRepository.findAllById(compilationCreationDto.getEvents())));
     compilationRepository.save(compilation);
     return CompilationMapper.toDto(compilation);
   }
@@ -53,7 +54,7 @@ public class CompilationServiceImpl implements CompilationService {
   public CompilationDto updateCompilation(long compilationId, CompilationCreationDto compilationCreationDto) {
     var previousCompilation = compilationRepository.findById(compilationId).orElseThrow(NoSuchElementException::new);
     var compilation = CompilationMapper.toUpdatedEntity(compilationCreationDto, previousCompilation);
-    compilation.setEvents(eventRepository.findAllById(compilationCreationDto.getEvents()));
+    compilation.setEvents(new HashSet<>(eventRepository.findAllById(compilationCreationDto.getEvents())));
     compilationRepository.save(compilation);
     return CompilationMapper.toDto(compilation);
   }

@@ -25,7 +25,7 @@ public class CompilationMapper {
     return CompilationEntity.builder()
         .title(compilationDto.getTitle())
         .pinned(compilationDto.getPinned())
-        .events(compilationDto.getEvents().stream().map(EventEntity::new).collect(Collectors.toList()))
+        .events(compilationDto.getEvents().stream().map(EventEntity::new).collect(Collectors.toSet()))
         .build();
   }
 
@@ -36,7 +36,7 @@ public class CompilationMapper {
         .title(compilationDto.getTitle() != null ? compilationDto.getTitle() : previousCompilation.getTitle())
         .pinned(compilationDto.getPinned() != null ? compilationDto.getPinned() : previousCompilation.getPinned())
         .events(compilationDto.getEvents() != null
-            ? compilationDto.getEvents().stream().map(EventEntity::new).collect(Collectors.toList())
+            ? compilationDto.getEvents().stream().map(EventEntity::new).collect(Collectors.toSet())
             : previousCompilation.getEvents())
         .build();
   }

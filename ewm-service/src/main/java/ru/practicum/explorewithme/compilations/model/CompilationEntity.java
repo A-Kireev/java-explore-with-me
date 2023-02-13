@@ -1,9 +1,9 @@
 package ru.practicum.explorewithme.compilations.model;
 
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,10 +34,10 @@ public class CompilationEntity {
   private Boolean pinned;
   @Column(nullable = false)
   private String title;
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany
   @JoinTable(
       name = "compilation_event",
       joinColumns = @JoinColumn(name = "compilation_id"),
       inverseJoinColumns = @JoinColumn(name = "event_id"))
-  private List<EventEntity> events;
+  private Set<EventEntity> events;
 }
