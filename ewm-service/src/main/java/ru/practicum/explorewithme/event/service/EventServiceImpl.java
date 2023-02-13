@@ -64,6 +64,10 @@ public class EventServiceImpl implements EventService {
   public OutputEventDto updateEvent(long userId, long eventId, InputEventDto inputEventDto) {
     var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
 
+    if (event.getInitiator().getId() != userId) {
+      throw new IllegalStateException("Only initiator can update event.");
+    }
+
     if (event.getState() != EventStatus.PENDING && event.getState() != EventStatus.CANCELED) {
       throw new ValidationException("Cannot change event because of its state.");
     }
