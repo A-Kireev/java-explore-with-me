@@ -1,5 +1,6 @@
 package ru.practicum.explorewithme.user.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +26,9 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @Column(nullable = false)
   private String name;
+  @Column(unique = true, nullable = false)
   private String email;
 
   public User(long userId) {

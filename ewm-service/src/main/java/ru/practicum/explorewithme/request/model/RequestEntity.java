@@ -1,6 +1,7 @@
 package ru.practicum.explorewithme.request.model;
 
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,12 +33,14 @@ public class RequestEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @ManyToOne
-  @JoinColumn(name = "event_id", referencedColumnName = "id")
+  @JoinColumn(name = "event_id", referencedColumnName = "id", nullable = false)
   private EventEntity event;
   @ManyToOne
-  @JoinColumn(name = "requester_id", referencedColumnName = "id")
+  @JoinColumn(name = "requester_id", referencedColumnName = "id", nullable = false)
   private User user;
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private RequestStatusDto status;
+  @Column(nullable = false)
   private LocalDateTime createdOn;
 }

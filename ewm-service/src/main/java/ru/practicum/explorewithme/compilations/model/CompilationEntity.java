@@ -1,6 +1,7 @@
 package ru.practicum.explorewithme.compilations.model;
 
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,9 +30,11 @@ public class CompilationEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @Column(nullable = false)
   private Boolean pinned;
+  @Column(nullable = false)
   private String title;
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "compilation_event",
       joinColumns = @JoinColumn(name = "compilation_id"),
