@@ -14,6 +14,7 @@ import ru.practicum.explorewithme.compilations.repository.CompilationRepository;
 import ru.practicum.explorewithme.event.repository.EventRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CompilationServiceImpl implements CompilationService {
 

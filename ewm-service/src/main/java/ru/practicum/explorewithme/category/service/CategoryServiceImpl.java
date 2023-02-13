@@ -2,6 +2,7 @@ package ru.practicum.explorewithme.category.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -11,6 +12,7 @@ import ru.practicum.explorewithme.category.dto.CategoryMapper;
 import ru.practicum.explorewithme.category.repository.CategoryRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
