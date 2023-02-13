@@ -104,7 +104,8 @@ public class RequestServiceImpl implements RequestService {
   }
 
   @Override
-  public RequestStatusesDto changeEventRequests(long userId, ChangeRequestStatusDto changeRequestStatusDto) {
+  public RequestStatusesDto changeEventRequests(long userId, long eventId,
+      ChangeRequestStatusDto changeRequestStatusDto) {
     var requests = requestRepository.findAllByIdIn(changeRequestStatusDto.getRequestIds());
     requests.forEach(s -> {
       if (s.getStatus() != RequestStatusDto.PENDING) {
@@ -112,7 +113,7 @@ public class RequestServiceImpl implements RequestService {
       }
       s.setStatus(changeRequestStatusDto.getStatus());
 
-      var event = eventRepository.findById(s.getEvent().getId()).orElseThrow(NoSuchElementException::new);
+      var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
 
       if (event.getParticipantLimit() != null) {
         if (event.getConfirmedRequests() != null && event.getConfirmedRequests() >= event.getParticipantLimit()) {

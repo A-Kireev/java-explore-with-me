@@ -47,7 +47,8 @@ public class RequestController {
 
   @PatchMapping("/events/{eventId}/requests")
   public RequestStatusesDto changeEventRequests(@PathVariable long userId,
+      @PathVariable long eventId,
       @RequestBody ChangeRequestStatusDto changeRequestStatusDto) {
-    return requestService.changeEventRequests(userId, changeRequestStatusDto);
+    return requestService.changeEventRequests(userId, eventId, changeRequestStatusDto);
   }
 }
