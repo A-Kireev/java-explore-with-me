@@ -101,7 +101,8 @@ public class EventServiceImpl implements EventService {
       throw new ValidationException("This event already published.");
     }
 
-    if (inputEventDto.getEventDate() != null && inputEventDto.getEventDate().isBefore(LocalDateTime.now())) {
+    if (inputEventDto.getEventDate() != null
+        && inputEventDto.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {
       throw new ValidationException("Incorrect date.");
     }
 
