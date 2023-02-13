@@ -18,7 +18,6 @@ import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
 import ru.practicum.explorewithme.event.dto.StateAction;
 import ru.practicum.explorewithme.event.repository.EventRepository;
-import ru.practicum.explorewithme.request.repository.RequestRepository;
 import ru.practicum.explorewithme.user.model.User;
 
 @Service
@@ -27,13 +26,14 @@ import ru.practicum.explorewithme.user.model.User;
 public class EventServiceImpl implements EventService {
 
   private final EventRepository eventRepository;
-  private final RequestRepository requestRepository;
 
   @Override
   public List<OutputEventDto> getEvents(long userId, int from, int size) {
-    var sort = Sort.by("id").ascending();
+    var sort = Sort.by("createdOn").descending();
     var pageable = PageRequest.of(from / size, size, sort);
-    return eventRepository.findAll(pageable).map(EventMapper::toDto).toList();
+    return eventRepository.findAllByInitiatorId(userId, pageable).stream()
+        .map(EventMapper::toDto)
+        .collect(Collectors.toList());
   }
 
   @Override
