@@ -2,7 +2,7 @@ package ru.practicum.explorewithme.category.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +16,6 @@ import lombok.Setter;
 public class CategoryDto {
 
   private Long id;
-  @NotNull
+  @NotBlank
   private String name;
 }

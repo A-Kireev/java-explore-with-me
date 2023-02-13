@@ -1,7 +1,7 @@
 package ru.practicum.explorewithme.compilations.dto;
 
 import java.util.List;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +17,6 @@ public class CompilationCreationDto {
 
   private List<Long> events;
   private Boolean pinned;
-  @NotNull
+  @NotBlank
   private String title;
 }

@@ -1,6 +1,5 @@
 package ru.practicum.explorewithme.user.service;
 
-import io.micrometer.core.instrument.util.StringUtils;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto createUser(UserDto userDto) {
-    checkEmailPresents(userDto);
-
     var user = storage.save(UserMapper.toUser(userDto));
     return UserMapper.toUserDto(user);
   }
@@ -31,11 +28,5 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteUser(long userId) {
     storage.deleteById(userId);
-  }
-
-  private void checkEmailPresents(UserDto userDto) {
-    if (StringUtils.isBlank(userDto.getEmail())) {
-      throw new IllegalStateException("Email address is not presented");
-    }
   }
 }
