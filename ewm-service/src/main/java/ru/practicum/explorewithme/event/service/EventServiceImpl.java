@@ -38,7 +38,8 @@ public class EventServiceImpl implements EventService {
 
   @Override
   public OutputEventDto createEvent(long userId, InputEventDto inputEventDto) {
-    if (inputEventDto.getEventDate() != null && inputEventDto.getEventDate().isBefore(LocalDateTime.now())) {
+    if (inputEventDto.getEventDate() != null
+        && inputEventDto.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {
       throw new ValidationException("Incorrect date.");
     }
 
@@ -67,7 +68,8 @@ public class EventServiceImpl implements EventService {
       throw new ValidationException("Cannot change event because of its state.");
     }
 
-    if (inputEventDto.getEventDate() != null && inputEventDto.getEventDate().isBefore(LocalDateTime.now())) {
+    if (inputEventDto.getEventDate() != null
+        && inputEventDto.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {
       throw new ValidationException("Incorrect date.");
     }
 
