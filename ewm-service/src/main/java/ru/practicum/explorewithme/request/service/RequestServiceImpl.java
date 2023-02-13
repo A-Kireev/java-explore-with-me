@@ -36,8 +36,11 @@ public class RequestServiceImpl implements RequestService {
 
   @Override
   public RequestDto createRequest(long userId, long eventId) {
-    var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
+    if (requestRepository.existsByEventIdAndUserId(eventId, userId)) {
+      throw new ValidationException("This request already exists.");
+    }
 
+    var event = eventRepository.findById(eventId).orElseThrow(NoSuchElementException::new);
     if (event.getState() != EventStatus.PUBLISHED) {
       throw new ValidationException("Event not published yet.");
     }
