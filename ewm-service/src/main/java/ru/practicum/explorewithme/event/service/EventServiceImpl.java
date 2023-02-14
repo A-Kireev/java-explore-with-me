@@ -167,6 +167,24 @@ public class EventServiceImpl implements EventService {
     commentRepository.deleteById(commentId);
   }
 
+  @Override
+  public CommentDto updateCommentByAdmin(long eventId, long commentId, CommentDto commentDto) {
+    var comment = commentRepository.findById(commentId).orElseThrow(NoSuchElementException::new);
+
+    var updatedComment = CommentMapper.toUpdatedComment(commentDto, comment);
+    updatedComment.setIsModified(true);
+    updatedComment.setUpdateDateTime(LocalDateTime.now());
+    commentRepository.save(updatedComment);
+
+    return CommentMapper.toCommentDto(updatedComment);
+  }
+
+  @Override
+  public void deleteCommentByAdmin(long eventId, long commentId) {
+    commentRepository.findById(commentId).orElseThrow(NoSuchElementException::new);
+    commentRepository.deleteById(commentId);
+  }
+
   private void validateEventDate(InputEventDto inputEventDto) {
     if (inputEventDto.getEventDate() != null
         && inputEventDto.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {

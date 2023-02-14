@@ -31,4 +31,8 @@ public interface EventService {
   CommentDto updateComment(long userId, long eventId, long commentId, CommentDto commentDto);
 
   void deleteComment(long userId, long eventId, long commentId);
+
+  CommentDto updateCommentByAdmin(long eventId, long commentId, CommentDto commentDto);
+
+  void deleteCommentByAdmin(long eventId, long commentId);
 }

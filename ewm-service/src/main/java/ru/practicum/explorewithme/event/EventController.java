@@ -116,4 +116,18 @@ public class EventController {
       @PathVariable long commentId) {
     eventService.deleteComment(userId, eventId, commentId);
   }
+
+  @PatchMapping("/admin/events/{eventId}/comment/{commentId}")
+  public CommentDto updateCommentByAdmin(@PathVariable long eventId,
+      @PathVariable long commentId,
+      @RequestBody CommentDto comment) {
+    return eventService.updateCommentByAdmin(eventId, commentId, comment);
+  }
+
+  @DeleteMapping("/admin/events/{eventId}/comment/{commentId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteCommentByAdmin(@PathVariable long eventId,
+      @PathVariable long commentId) {
+    eventService.deleteCommentByAdmin(eventId, commentId);
+  }
 }
