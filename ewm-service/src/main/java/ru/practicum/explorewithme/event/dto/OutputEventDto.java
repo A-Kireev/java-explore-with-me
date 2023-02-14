@@ -2,12 +2,14 @@ package ru.practicum.explorewithme.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.explorewithme.category.model.CategoryEntity;
+import ru.practicum.explorewithme.event.dto.comment.CommentDto;
 import ru.practicum.explorewithme.user.model.User;
 
 @NoArgsConstructor
@@ -36,4 +38,5 @@ public class OutputEventDto {
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
   private LocalDateTime publishedOn;
   private Integer confirmedRequests;
+  private List<CommentDto> comments;
 }

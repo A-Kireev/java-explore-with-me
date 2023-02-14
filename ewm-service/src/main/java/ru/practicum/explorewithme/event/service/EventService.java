@@ -4,6 +4,7 @@ import java.util.List;
 import ru.practicum.explorewithme.event.dto.FullEventInfo;
 import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
+import ru.practicum.explorewithme.event.dto.comment.CommentDto;
 
 public interface EventService {
 
@@ -24,4 +25,10 @@ public interface EventService {
       String rangeEnd, Boolean onlyAvailable, String sort, int from, int size);
 
   FullEventInfo getFullEventInfo(long eventId);
+
+  CommentDto addComment(long userId, long eventId, CommentDto commentDto);
+
+  CommentDto updateComment(long userId, long eventId, long commentId, CommentDto commentDto);
+
+  void deleteComment(long userId, long eventId, long commentId);
 }

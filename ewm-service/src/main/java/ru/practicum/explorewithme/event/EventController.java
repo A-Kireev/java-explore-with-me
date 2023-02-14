@@ -6,11 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,7 @@ import ru.practicum.explorewithme.StatsClient;
 import ru.practicum.explorewithme.event.dto.FullEventInfo;
 import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
+import ru.practicum.explorewithme.event.dto.comment.CommentDto;
 import ru.practicum.explorewithme.event.service.EventService;
 
 @RestController
@@ -88,5 +91,29 @@ public class EventController {
   public FullEventInfo getFullEventInfo(@PathVariable long eventId, HttpServletRequest request) {
     statsClient.hit(new HitDto("ewm-service", request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
     return eventService.getFullEventInfo(eventId);
+  }
+
+  @PostMapping("/events/{eventId}/comment")
+  @ResponseStatus(HttpStatus.CREATED)
+  public CommentDto addComment(@RequestHeader("X-Sharer-User-Id") long userId,
+      @PathVariable long eventId,
+      @RequestBody CommentDto comment) {
+    return eventService.addComment(userId, eventId, comment);
+  }
+
+  @PatchMapping("/events/{eventId}/comment/{commentId}")
+  public CommentDto updateComment(@RequestHeader("X-Sharer-User-Id") long userId,
+      @PathVariable long eventId,
+      @PathVariable long commentId,
+      @RequestBody CommentDto comment) {
+    return eventService.updateComment(userId, eventId, commentId, comment);
+  }
+
+  @DeleteMapping("/events/{eventId}/comment/{commentId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteComment(@RequestHeader("X-Sharer-User-Id") long userId,
+      @PathVariable long eventId,
+      @PathVariable long commentId) {
+    eventService.deleteComment(userId, eventId, commentId);
   }
 }

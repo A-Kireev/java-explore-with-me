@@ -1,6 +1,7 @@
 package ru.practicum.explorewithme.event.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -63,6 +65,9 @@ public class EventEntity {
   private LocalDateTime publishedOn;
   private Integer confirmedRequests;
   private Long views;
+  @OneToMany
+  @JoinColumn(name = "event_id", referencedColumnName = "id")
+  private List<CommentEntity> comments;
 
   public EventEntity(Long id) {
     this.id = id;

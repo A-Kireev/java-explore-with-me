@@ -1,8 +1,11 @@
 package ru.practicum.explorewithme.event.dto;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import ru.practicum.explorewithme.event.dto.comment.CommentMapper;
 import ru.practicum.explorewithme.event.model.EventEntity;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -26,6 +29,9 @@ public class EventMapper {
         .category(eventEntity.getCategory())
         .confirmedRequests(eventEntity.getConfirmedRequests())
         .views(eventEntity.getViews())
+        .comments(eventEntity.getComments() != null
+            ? eventEntity.getComments().stream().map(CommentMapper::toCommentDto).collect(Collectors.toList())
+            : Collections.emptyList())
         .build();
   }
 
@@ -94,6 +100,9 @@ public class EventMapper {
         .category(eventEntity.getCategory())
         .confirmedRequests(eventEntity.getConfirmedRequests())
         .views(eventEntity.getViews())
+        .comments(eventEntity.getComments() != null
+            ? eventEntity.getComments().stream().map(CommentMapper::toCommentDto).collect(Collectors.toList())
+            : Collections.emptyList())
         .build();
   }
 }

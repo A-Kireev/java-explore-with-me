@@ -17,8 +17,12 @@ import ru.practicum.explorewithme.event.dto.FullEventInfo;
 import ru.practicum.explorewithme.event.dto.InputEventDto;
 import ru.practicum.explorewithme.event.dto.OutputEventDto;
 import ru.practicum.explorewithme.event.dto.StateAction;
+import ru.practicum.explorewithme.event.dto.comment.CommentDto;
+import ru.practicum.explorewithme.event.dto.comment.CommentMapper;
+import ru.practicum.explorewithme.event.repository.CommentRepository;
 import ru.practicum.explorewithme.event.repository.EventRepository;
 import ru.practicum.explorewithme.user.model.User;
+import ru.practicum.explorewithme.user.repository.UserRepository;
 
 @Service
 @Transactional
@@ -26,6 +30,8 @@ import ru.practicum.explorewithme.user.model.User;
 public class EventServiceImpl implements EventService {
 
   private final EventRepository eventRepository;
+  private final CommentRepository commentRepository;
+  private final UserRepository userRepository;
 
   @Override
   public List<OutputEventDto> getEvents(long userId, int from, int size) {
@@ -38,11 +44,7 @@ public class EventServiceImpl implements EventService {
 
   @Override
   public OutputEventDto createEvent(long userId, InputEventDto inputEventDto) {
-    if (inputEventDto.getEventDate() != null
-        && inputEventDto.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {
-      throw new ValidationException("Incorrect date.");
-    }
-
+    validateEventDate(inputEventDto);
     var event = EventMapper.toEntity(inputEventDto);
     event.setInitiator(new User(userId));
     event.setCategory(new CategoryEntity(Long.valueOf(inputEventDto.getCategory())));
@@ -72,10 +74,7 @@ public class EventServiceImpl implements EventService {
       throw new ValidationException("Cannot change event because of its state.");
     }
 
-    if (inputEventDto.getEventDate() != null
-        && inputEventDto.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {
-      throw new ValidationException("Incorrect date.");
-    }
+    validateEventDate(inputEventDto);
 
     var updatedEvent = EventMapper.toEntity(inputEventDto, event);
     eventRepository.save(updatedEvent);
@@ -101,10 +100,7 @@ public class EventServiceImpl implements EventService {
       throw new ValidationException("This event already published.");
     }
 
-    if (inputEventDto.getEventDate() != null
-        && inputEventDto.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {
-      throw new ValidationException("Incorrect date.");
-    }
+    validateEventDate(inputEventDto);
 
     var newState = inputEventDto.getStateAction() == StateAction.PUBLISH_EVENT
         ? EventStatus.PUBLISHED
@@ -132,5 +128,47 @@ public class EventServiceImpl implements EventService {
     eventRepository.save(event);
 
     return EventMapper.toFullDto(event);
+  }
+
+  @Override
+  public CommentDto addComment(long userId, long eventId, CommentDto commentDto) {
+    var user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+    var comment = commentRepository.save(CommentMapper.toComment(commentDto, userId, eventId));
+    var createdComment = CommentMapper.toCommentDto(comment);
+    createdComment.setAuthorName(user.getName());
+
+    return createdComment;
+  }
+
+  @Override
+  public CommentDto updateComment(long userId, long eventId, long commentId, CommentDto commentDto) {
+    var comment = commentRepository.findById(commentId).orElseThrow(NoSuchElementException::new);
+
+    if (comment.getAuthor().getId() != userId) {
+      throw new IllegalStateException("Only comment author can update comment.");
+    }
+
+    var updatedComment = CommentMapper.toUpdatedComment(commentDto, comment);
+    commentRepository.save(updatedComment);
+
+    return CommentMapper.toCommentDto(updatedComment);
+  }
+
+  @Override
+  public void deleteComment(long userId, long eventId, long commentId) {
+    var comment = commentRepository.findById(commentId).orElseThrow(NoSuchElementException::new);
+
+    if (comment.getAuthor().getId() != userId) {
+      throw new IllegalStateException("Only comment author can delete comment.");
+    }
+
+    commentRepository.deleteById(commentId);
+  }
+
+  private void validateEventDate(InputEventDto inputEventDto) {
+    if (inputEventDto.getEventDate() != null
+        && inputEventDto.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {
+      throw new ValidationException("Incorrect date.");
+    }
   }
 }
