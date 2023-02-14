@@ -16,6 +16,7 @@ public class CommentMapper {
         .author(new User(userId))
         .eventId(eventId)
         .createDateTime(LocalDateTime.now())
+        .isModified(commentDto.getIsModified())
         .build();
   }
 
@@ -25,6 +26,7 @@ public class CommentMapper {
         .text(comment.getText())
         .authorName(comment.getAuthor().getName())
         .created(comment.getCreateDateTime())
+        .isModified(comment.getIsModified())
         .build();
   }
 

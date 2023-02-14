@@ -149,6 +149,7 @@ public class EventServiceImpl implements EventService {
     }
 
     var updatedComment = CommentMapper.toUpdatedComment(commentDto, comment);
+    updatedComment.setIsModified(true);
     commentRepository.save(updatedComment);
 
     return CommentMapper.toCommentDto(updatedComment);

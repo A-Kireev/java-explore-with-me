@@ -20,4 +20,5 @@ public class CommentDto {
   private String authorName;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime created;
+  private Boolean isModified;
 }
