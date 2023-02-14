@@ -58,5 +58,6 @@ CREATE TABLE IF NOT EXISTS comments (
 	event_id int8 REFERENCES events (id),
 	author_id int8 REFERENCES users (id),
 	create_datetime TIMESTAMP WITHOUT TIME ZONE,
-	is_modified boolean
+	is_modified boolean,
+	update_datetime TIMESTAMP WITHOUT TIME ZONE
 );

@@ -17,6 +17,7 @@ public class CommentMapper {
         .eventId(eventId)
         .createDateTime(LocalDateTime.now())
         .isModified(commentDto.getIsModified())
+        .updateDateTime(commentDto.getUpdated())
         .build();
   }
 
@@ -27,6 +28,7 @@ public class CommentMapper {
         .authorName(comment.getAuthor().getName())
         .created(comment.getCreateDateTime())
         .isModified(comment.getIsModified())
+        .updated(comment.getUpdateDateTime())
         .build();
   }
 
@@ -37,6 +39,8 @@ public class CommentMapper {
         .author(commentEntity.getAuthor())
         .eventId(commentEntity.getEventId())
         .createDateTime(commentEntity.getCreateDateTime())
+        .isModified(commentEntity.getIsModified())
+        .updateDateTime(commentEntity.getUpdateDateTime())
         .build();
   }
 }

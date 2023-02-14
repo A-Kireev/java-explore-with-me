@@ -150,6 +150,7 @@ public class EventServiceImpl implements EventService {
 
     var updatedComment = CommentMapper.toUpdatedComment(commentDto, comment);
     updatedComment.setIsModified(true);
+    updatedComment.setUpdateDateTime(LocalDateTime.now());
     commentRepository.save(updatedComment);
 
     return CommentMapper.toCommentDto(updatedComment);

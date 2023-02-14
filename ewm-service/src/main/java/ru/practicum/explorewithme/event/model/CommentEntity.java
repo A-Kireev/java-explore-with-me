@@ -37,4 +37,6 @@ public class CommentEntity {
   @Column(name = "create_datetime")
   private LocalDateTime createDateTime;
   private Boolean isModified;
+  @Column(name = "update_datetime")
+  private LocalDateTime updateDateTime;
 }
